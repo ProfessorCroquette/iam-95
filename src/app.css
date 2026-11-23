@@ -1,0 +1,701 @@
+/* =========================================================
+1. SHARED TOKENS (the same in every theme)
+   ========================================================= */
+:root {
+  --font-ui: Tahoma, "MS Sans Serif", sans-serif;
+  --font-lcd: "Courier New", Courier, monospace;
+
+  /* bevels: light comes from the top-left */
+  --bevel-raised:
+    inset -1px -1px var(--win-dark),
+    inset 1px 1px var(--win-light),
+    inset -2px -2px var(--win-shadow),
+    inset 2px 2px var(--win-mid);
+
+  --bevel-sunken:
+    inset -1px -1px var(--win-light),
+    inset 1px 1px var(--win-shadow),
+    inset -2px -2px var(--win-mid),
+    inset 2px 2px var(--win-dark);
+
+  --crt-text-shadow: var(--crt-glow);
+  --crt-scanlines: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.38) 0 1px,
+    transparent 1px 3px
+  );
+  --crt-grille: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.018) 0 1px,
+    transparent 1px 3px
+  );
+  --crt-tint: radial-gradient(
+    circle at 82% 18%,
+    rgba(255, 42, 133, 0.08),
+    transparent 58%
+  );
+  --crt-inner-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.68),
+    inset 0 0 4px rgba(255, 255, 255, 0.04);
+  --crt-glass:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.015) 24%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 66%,
+      rgba(0, 0, 0, 0.32) 100%
+    );
+}
+
+/* =========================================================
+2. THEMES: <html data-theme="...">
+   ========================================================= */
+
+/* ---------- Vaporwave95 (default): punchy 90s hyper-neon + Win95 chrome ---------- */
+:root,
+[data-theme="vaporwave95"] {
+  --win-bg: #c4bfd4;
+  --win-light: #ffffff;
+  --win-mid: #e6e1f5;
+  --win-shadow: #7a7394;
+  --win-dark: #090314;
+
+  --title-bg: linear-gradient(90deg, #0011aa 0%, #8b2bff 42%, #ff2a85 76%, #00f0ff 100%);
+  --title-fg: #ffffff;
+  --title-shadow: 1px 1px 0 #180333;
+
+  --crt-bg: #070012;
+  --crt-text: #00f096;
+  --crt-label: #ff5cd9;
+  --crt-time: #2ce8ff;
+  --crt-info: #c285ff;
+  --crt-glow: 0 0 3px currentColor, 0 0 7px color-mix(in srgb, currentColor 28%, transparent);
+
+  --accent: linear-gradient(90deg, #ff2a85 0%, #b517ff 50%, #00f0ff 100%);
+  --slider-track: #120229;
+
+  --sel-bg: #5a189a;
+  --sel-fg: #ffffff;
+  --sel-shadow: 0 0 4px rgba(255, 79, 216, 0.35);
+
+  --window-shadow: 5px 5px 0 rgba(9, 3, 20, 0.55), 0 0 18px rgba(181, 23, 255, 0.22);
+}
+
+/* ---------- Vaporwave95 v2: hot magenta sky, aqua road & chromatic CRT ---------- */
+[data-theme="vaporwave95v2"] {
+  --win-bg: #e2c6eb;
+  --win-light: #ffffff;
+  --win-mid: #f6e7fb;
+  --win-shadow: #7b4c96;
+  --win-dark: #0b0318;
+
+  --title-bg: linear-gradient(90deg, #ff24a8 0%, #a838f5 50%, #18e8ff 100%);
+  --title-fg: #ffffff;
+  --title-shadow: -1px 0 0 #18e8ff, 1px 0 0 #ff1e9e, 0 1px 1px rgba(11, 3, 24, 0.8);
+
+  --crt-bg: #080116;
+  --crt-text: #18e8ff;
+  --crt-label: #ff4ec4;
+  --crt-time: #7dffb3;
+  --crt-info: #ff9ee4;
+  --crt-glow: 0 0 4px currentColor, 0 0 10px color-mix(in srgb, currentColor 38%, transparent);
+  --crt-text-shadow: -1px 0 0 rgba(255, 36, 168, 0.55), 1px 0 0 rgba(24, 232, 255, 0.55), 0 0 8px rgba(24, 232, 255, 0.35);
+
+  --crt-scanlines: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.44) 0 1px,
+    transparent 1px 3px
+  );
+  --crt-tint: radial-gradient(
+    circle at 18% 85%,
+    rgba(24, 232, 255, 0.16),
+    transparent 56%
+  ), radial-gradient(
+    circle at 85% 15%,
+    rgba(255, 36, 168, 0.18),
+    transparent 56%
+  );
+
+  --accent: linear-gradient(90deg, #ff24a8 0%, #9d4edd 50%, #18e8ff 100%);
+  --slider-track: #14032b;
+
+  --sel-bg: linear-gradient(90deg, #c9188b 0%, #0ea5c6 100%);
+  --sel-fg: #ffffff;
+  --sel-shadow: -1px 0 0 rgba(24, 232, 255, 0.45), 1px 0 0 rgba(255, 36, 168, 0.45);
+
+  --window-shadow: 5px 5px 0 rgba(11, 3, 24, 0.62), 0 0 22px rgba(255, 36, 168, 0.25);
+}
+
+/* ---------- Vaporwave v3: VHS pink-lavender sky & teal hills ---------- */
+[data-theme="vaporwavev3"] {
+  --win-bg: #c9d6e3;
+  --win-light: #ffffff;
+  --win-mid: #e6eef5;
+  --win-shadow: #4a6b7c;
+  --win-dark: #071921;
+
+  /* magenta-pink sky fading into soft periwinkle/sky and seafoam teal */
+  --title-bg: linear-gradient(90deg, #e843a8 0%, #b366e6 46%, #46b5c4 100%);
+  --title-fg: #ffffff;
+  --title-shadow: 0 1px 1px rgba(7, 25, 33, 0.75);
+
+  /* deep teal-indigo VHS monitor */
+  --crt-bg: #051821;
+  --crt-text: #72f7d4;
+  --crt-label: #ff77cf;
+  --crt-time: #9be7ff;
+  --crt-info: #9fd8cb;
+  --crt-glow: 0 0 4px currentColor, 0 0 9px color-mix(in srgb, currentColor 30%, transparent);
+  --crt-text-shadow: -1px 0 0 rgba(232, 67, 168, 0.4), 1px 0 0 rgba(155, 231, 255, 0.4), var(--crt-glow);
+
+  --crt-scanlines: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.42) 0 1px,
+    transparent 1px 3px
+  );
+  --crt-tint: radial-gradient(
+    circle at 82% 16%,
+    rgba(232, 67, 168, 0.14),
+    transparent 55%
+  ), radial-gradient(
+    circle at 20% 88%,
+    rgba(30, 120, 116, 0.22),
+    transparent 60%
+  );
+
+  --accent: linear-gradient(90deg, #e843a8 0%, #52b7c4 55%, #72f7d4 100%);
+  --slider-track: #082430;
+
+  --sel-bg: linear-gradient(90deg, #1b6b72 0%, #9b3d8c 100%);
+  --sel-fg: #ffffff;
+  --sel-shadow: 0 1px 1px rgba(7, 25, 33, 0.6);
+
+  --window-shadow: 5px 5px 0 rgba(7, 25, 33, 0.55), 0 0 20px rgba(70, 181, 196, 0.22);
+}
+
+/* ---------- Win95 Blue (authentic solid navy titlebar + classic grey) ---------- */
+[data-theme="win95-blue"] {
+  --win-bg: #c0c0c0;
+  --win-light: #ffffff;
+  --win-mid: #dfdfdf;
+  --win-shadow: #808080;
+  --win-dark: #000000;
+
+  --title-bg: #000080;
+  --title-fg: #ffffff;
+  --title-shadow: none;
+
+  --crt-bg: #000000;
+  --crt-text: #33ff66;
+  --crt-label: #c0c0c0;
+  --crt-time: #33ff66;
+  --crt-info: #a0a0a0;
+  --crt-glow: none;
+
+  --accent: #000080;
+  --slider-track: #000000;
+
+  --sel-bg: #000080;
+  --sel-fg: #ffffff;
+  --sel-shadow: none;
+
+  --window-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Win98 (gradient titlebar + crisp 3D chrome) ---------- */
+[data-theme="win98"] {
+  --win-bg: #c0c0c0;
+  --win-light: #ffffff;
+  --win-mid: #dfdfdf;
+  --win-shadow: #808080;
+  --win-dark: #000000;
+
+  --title-bg: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  --title-fg: #ffffff;
+  --title-shadow: none;
+
+  --crt-bg: #000000;
+  --crt-text: #33ff66;
+  --crt-label: #58b4f0;
+  --crt-time: #33ff66;
+  --crt-info: #a8a8a8;
+  --crt-glow: none;
+
+  --accent: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+  --slider-track: #000000;
+
+  --sel-bg: #000080;
+  --sel-fg: #ffffff;
+  --sel-shadow: none;
+
+  --window-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Citypop (night sky into sunset) ---------- */
+[data-theme="citypop"] {
+  --win-bg: #f5dcc8;
+  --win-light: #fffaf3;
+  --win-mid: #fbeadb;
+  --win-shadow: #b88a74;
+  --win-dark: #2a1830;
+
+  --title-bg: linear-gradient(90deg, #243b7a, #ff7a59, #ffc46b);
+  --title-fg: #fffaf3;
+  --title-shadow: 1px 1px #2a1830;
+
+  --crt-bg: #0a1230;
+  --crt-text: #ffd36b;
+  --crt-label: #ff8b6e;
+  --crt-time: #67dce8;
+  --crt-info: #8fb0ff;
+  --crt-glow: 0 0 3px currentColor;
+
+  --accent: linear-gradient(90deg, #ff7a59, #ffc46b);
+  --slider-track: #0a1230;
+
+  --sel-bg: #243b7a;
+  --sel-fg: #fffaf3;
+  --sel-shadow: none;
+
+  --window-shadow: 0 0 0 transparent;
+}
+
+/* =========================================================
+3. BASE
+   ========================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--win-dark);
+  user-select: none;
+}
+
+/* padding only on body: room for the window shadow */
+body {
+  padding: 14px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* =========================================================
+4. WINDOW: bevel drawn on top so bar and body share one edge
+   ========================================================= */
+.win-95-window {
+  position: relative;
+  width: 100%;
+  max-width: 374px;
+  padding: 0;
+  background: var(--win-bg);
+  box-shadow: var(--window-shadow);
+}
+
+.win-95-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--bevel-raised);
+  pointer-events: none;
+}
+
+/* everything under the title bar goes in here */
+.win-95-body {
+  padding: 4px;
+}
+
+/* =========================================================
+5. TITLE BAR
+   ========================================================= */
+.win-95-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 8px;
+  background: var(--title-bg);
+  color: var(--title-fg);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  text-shadow: var(--title-shadow);
+  user-select: none;
+}
+
+.win-95-titlebtns {
+  display: flex;
+  gap: 2px;
+}
+
+.win-95-titlebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: var(--win-bg);
+  color: var(--win-dark);
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: none;
+  box-shadow: var(--bevel-raised);
+  cursor: pointer;
+}
+
+.win-95-titlebtn:active,
+.win-95-titlebtn[aria-pressed="true"] {
+  box-shadow: var(--bevel-sunken);
+  padding: 1px 0 0 1px;
+}
+
+/* the underscore sits low in its line, so lift it */
+.win-95-titlebtn.is-min {
+  padding-bottom: 6px;
+}
+
+.win-95-titlebtn.is-min:active,
+.win-95-titlebtn.is-min[aria-pressed="true"] {
+  padding: 0 0 5px 1px;
+}
+
+/* =========================================================
+6. BUTTON (no hover change, like real Win95)
+   ========================================================= */
+.win-95-btn {
+  padding: 4px 14px;
+  border: 0;
+  background: var(--win-bg);
+  box-shadow: var(--bevel-raised);
+  cursor: pointer;
+}
+
+/* pressed or toggled on: sunken, label nudged 1px */
+.win-95-btn:active:not(:disabled),
+.win-95-btn[aria-pressed="true"] {
+  box-shadow: var(--bevel-sunken);
+  padding: 5px 13px 3px 15px;
+}
+
+.win-95-btn:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px var(--win-light);
+  cursor: default;
+}
+
+.win-95-btn:focus-visible {
+  outline: 1px dotted var(--win-dark);
+  outline-offset: -5px;
+}
+
+/* =========================================================
+7. CRT DISPLAY (scanlines, aperture grille, tube curve & glass glare)
+   ========================================================= */
+.win-95-display {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px / 4px;
+  margin: 4px 0;
+  padding: 10px 12px;
+  background-color: var(--crt-bg);
+  background-image:
+    var(--crt-scanlines),
+    var(--crt-grille),
+    var(--crt-tint);
+  color: var(--crt-text);
+  font-family: var(--font-lcd);
+  box-shadow:
+    var(--bevel-sunken),
+    var(--crt-inner-shadow);
+}
+
+/* glass reflection & subtle screen sheen over the tube */
+.win-95-display::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--crt-glass);
+}
+
+/* keep interactive / text content cleanly above any layered glass sheen */
+.win-95-display > * {
+  position: relative;
+  z-index: 1;
+}
+
+.win-95-display-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.win-95-display-label {
+  margin: 0;
+  font-size: 11px;
+  color: var(--crt-label);
+  text-shadow: 0 0 5px color-mix(in srgb, var(--crt-label) 25%, transparent);
+}
+
+.win-95-display-time {
+  margin: 0;
+  font-size: 12px;
+  color: var(--crt-time);
+  text-shadow: var(--crt-glow);
+}
+
+/* cover on the left, text on the right */
+.win-95-display-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.win-95-display-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.win-95-display-track {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: var(--crt-text-shadow);
+}
+
+.win-95-display-info {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--crt-info);
+  min-height: 1em;
+}
+
+/* ---------- scrolling title ---------- */
+.win-95-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.win-95-marquee > .win-95-display-track {
+  display: inline-block;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.win-95-marquee > .is-scrolling {
+  animation: ticker var(--dur, 6s) linear 0.8s infinite alternate;
+}
+
+@keyframes ticker {
+  to { transform: translateX(var(--shift)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .win-95-marquee > .is-scrolling {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ---------- pixelated cover art ---------- */
+.win-95-cover {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  background: var(--slider-track);
+  image-rendering: pixelated;
+  box-shadow: var(--bevel-sunken);
+}
+
+/* =========================================================
+8. TRANSPORT (row of buttons)
+   ========================================================= */
+.win-95-transport {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+/* =========================================================
+9. SLIDER (seek and volume): <input type="range">
+   set the fill with style="--pct: 40%"
+   ========================================================= */
+.win-95-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 10px;
+  margin: 8px 0 2px;
+  cursor: pointer;
+  background:
+    var(--accent) 0 0 / var(--pct, 0%) 100% no-repeat,
+    var(--slider-track);
+  box-shadow: var(--bevel-sunken);
+}
+
+.win-95-slider:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.win-95-slider::-webkit-slider-runnable-track {
+  height: 10px;
+  background: transparent;
+}
+
+.win-95-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 18px;
+  margin-top: -4px;
+  background: var(--win-bg);
+  box-shadow: var(--bevel-raised);
+}
+
+.win-95-slider::-moz-range-track {
+  height: 10px;
+  background: transparent;
+  border: 0;
+}
+
+.win-95-slider::-moz-range-thumb {
+  width: 10px;
+  height: 18px;
+  border: 0;
+  border-radius: 0;
+  background: var(--win-bg);
+  box-shadow: var(--bevel-raised);
+}
+
+.win-95-slider:focus-visible {
+  outline: 1px dotted var(--crt-text);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+10. PLAYLIST
+   ========================================================= */
+.win-95-list {
+  height: 175px;
+  margin: 4px 0;
+  padding: 2px;
+  overflow-y: auto;
+  background: var(--win-light);
+  box-shadow: var(--bevel-sunken);
+}
+
+.win-95-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.win-95-list-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 6px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.win-95-list-row > span:nth-child(2) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* the selected (playing) row */
+.win-95-list-row.is-active {
+  background: var(--sel-bg);
+  color: var(--sel-fg);
+  text-shadow: var(--sel-shadow);
+  outline: 1px dotted var(--sel-fg);
+  outline-offset: -2px;
+}
+
+.win-95-list-row:focus-visible {
+  outline: 1px dotted var(--win-dark);
+  outline-offset: -2px;
+}
+
+.win-95-list-row.is-active:focus-visible {
+  outline-color: var(--sel-fg);
+}
+
+.win-95-list-empty {
+  padding: 6px;
+  color: var(--win-shadow);
+}
+
+/* Win95-style scrollbar */
+.win-95-list::-webkit-scrollbar {
+  width: 16px;
+}
+
+.win-95-list::-webkit-scrollbar-track {
+  background: var(--win-mid);
+}
+
+.win-95-list::-webkit-scrollbar-thumb {
+  background: var(--win-bg);
+  box-shadow: var(--bevel-raised);
+}
+
+.win-95-list::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* =========================================================
+11. STATUS BAR
+   ========================================================= */
+.win-95-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 0;
+  font-size: 11px;
+}
+
+.win-95-status > span {
+  flex: 1;
+  padding: 2px 6px;
+  box-shadow:
+    inset 1px 1px var(--win-shadow),
+    inset -1px -1px var(--win-light);
+}
+
+/* =========================================================
+12. UTILITIES: use on any element
+   ========================================================= */
+.win-95-raised {
+  background: var(--win-bg);
+  box-shadow: var(--bevel-raised);
+}
+
+.win-95-sunken {
+  background: var(--win-light);
+  box-shadow: var(--bevel-sunken);
+}
