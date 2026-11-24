@@ -54,24 +54,40 @@ async function readTrack(path: string): Promise<Track> {
 }
 
 async function listAudioFiles(dir: string): Promise<string[]> {
-  const entries = await readDir(dir);
-  return entries
-    .filter((e) => e.isFile && AUDIO_EXTENSIONS.includes(extensionOf(e.name)))
-    .map((e) => e.name)
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  let entries;
+  try {
+    entries = await readDir(dir);
+  } catch (err) {
+    console.warn('Could not read folder', dir, err);
+    return [];
+  }
+
+  entries.sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { numeric: true })
+  );
+
+  const found: string[] = [];
+  for (const entry of entries) {
+    const path = await join(dir, entry.name);
+    if (entry.isDirectory) {
+      found.push(...(await listAudioFiles(path)));
+    } else if (entry.isFile && AUDIO_EXTENSIONS.includes(extensionOf(entry.name))) {
+      found.push(path);
+    }
+  }
+  return found;
 }
 
 export async function scanFolder(
   dir: string,
   onProgress?: (done: number, total: number, name: string) => void
 ): Promise<Track[]> {
-  const names = await listAudioFiles(dir);
+  const paths = await listAudioFiles(dir);
   const tracks: Track[] = [];
 
-  for (const name of names) {
-    const path = await join(dir, name);
+  for (const path of paths) {
     tracks.push(await readTrack(path));
-    onProgress?.(tracks.length, names.length, name);
+    onProgress?.(tracks.length, paths.length, fileNameOf(path));
     await new Promise((resolve) => setTimeout(resolve, SCAN_DELAY_MS));
   }
 

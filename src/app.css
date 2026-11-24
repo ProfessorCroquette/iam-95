@@ -380,6 +380,7 @@ button {
 .win-95-btn {
   padding: 4px 14px;
   border: 0;
+  font-variant-emoji: text; /* keep ⏮ ▶ ⏭ ⏏ as plain glyphs */
   background: var(--win-bg);
   box-shadow: var(--bevel-raised);
   cursor: pointer;
@@ -449,9 +450,26 @@ button {
 
 .win-95-display-label {
   margin: 0;
+  min-height: 1.2em;
   font-size: 11px;
+  font-variant-emoji: text; /* keep ▶ ⏸ as plain glyphs, not colour emoji */
   color: var(--crt-label);
   text-shadow: 0 0 5px color-mix(in srgb, var(--crt-label) 25%, transparent);
+}
+
+/* flickering label, add class="is-flicker" while scanning */
+.win-95-display-label.is-flicker {
+  animation: crt-flicker 1.1s steps(1, end) infinite;
+}
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 1; }
+  8%       { opacity: 0.35; }
+  10%      { opacity: 1; }
+  52%      { opacity: 0.8; }
+  54%      { opacity: 1; }
+  78%      { opacity: 0.45; }
+  80%      { opacity: 1; }
 }
 
 .win-95-display-time {
@@ -461,7 +479,7 @@ button {
   text-shadow: var(--crt-glow);
 }
 
-/* cover on the left, text on the right */
+/* holds the title, album and audio lines */
 .win-95-display-main {
   display: flex;
   align-items: center;
@@ -475,6 +493,7 @@ button {
 
 .win-95-display-track {
   margin: 0;
+  min-height: 1.3em;
   font-size: 14px;
   font-weight: bold;
   white-space: nowrap;
@@ -515,16 +534,10 @@ button {
     animation: none;
     transform: none;
   }
-}
 
-/* ---------- pixelated cover art ---------- */
-.win-95-cover {
-  flex: none;
-  width: 64px;
-  height: 64px;
-  background: var(--slider-track);
-  image-rendering: pixelated;
-  box-shadow: var(--bevel-sunken);
+  .win-95-display-label.is-flicker {
+    animation: none;
+  }
 }
 
 /* =========================================================
@@ -536,6 +549,13 @@ button {
   align-items: center;
   gap: 6px;
   margin: 8px 0;
+}
+
+/* the volume slider sits in the same row as the buttons */
+.win-95-transport .win-95-slider {
+  flex: none;
+  width: 80px;
+  margin: 0 0 0 6px;
 }
 
 /* =========================================================
@@ -699,3 +719,5 @@ button {
   background: var(--win-light);
   box-shadow: var(--bevel-sunken);
 }
+
+

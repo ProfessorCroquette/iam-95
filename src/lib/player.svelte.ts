@@ -1,5 +1,7 @@
 import type { Track } from "./types";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { open } from "@tauri-apps/plugin-dialog";
+import { scanFolder } from "./scan";
 
 type RepeatMode = "off" | "one" | "all";
 type Status = "idle" | "scanning" | "playing" | "paused";
@@ -15,6 +17,8 @@ class Player {
   error = $state("");
   repeat = $state<RepeatMode>("all");
   volume = $state(1);
+  scanDone = $state(0);
+  scanTotal = $state(0);
 
   #audio = new Audio();
 
@@ -30,6 +34,7 @@ class Player {
           ? "playing"
           : "paused",
   );
+
   constructor() {
     const a = this.#audio;
     a.volume = this.volume;
@@ -39,7 +44,6 @@ class Player {
     a.onloadedmetadata = () => {
       if (Number.isFinite(a.duration)) this.loadedDuration = a.duration;
     };
-    // 1. Update onended to call your new private method
     a.onended = () => this.#handleEnded();
     a.onerror = () => (this.error = "Could not load this file");
   }
@@ -77,6 +81,33 @@ class Player {
     this.time = clamped;
   }
 
+  async addFolder() {
+    const dir = await open({ directory: true });
+    if (!dir) return;
+
+    this.scanning = true;
+    this.scanDone = 0;
+    this.scanTotal = 0;
+    this.error = "";
+
+    try {
+      const found = await scanFolder(dir, (done, total) => {
+        this.scanDone = done;
+        this.scanTotal = total;
+      });
+      if (found.length === 0) {
+        this.error = "404 NOT FOUND";
+        return;
+      }
+      this.tracks = found;
+      this.play(0);
+    } catch {
+      this.error = "SOMETHING WICKED HAPPENING";
+    } finally {
+      this.scanning = false;
+    }
+  }
+
   setVolume(v: number) {
     const clamped = Math.min(Math.max(v, 0), 1);
     this.volume = clamped;
@@ -85,7 +116,7 @@ class Player {
 
   next() {
     if (this.tracks.length === 0) return;
-    this.play(this.index + 1); //Play next
+    this.play(this.index + 1);
   }
 
   prev() {
@@ -100,6 +131,12 @@ class Player {
   cycleRepeat() {
     const order: RepeatMode[] = ["off", "all", "one"];
     this.repeat = order[(order.indexOf(this.repeat) + 1) % order.length];
+  }
+
+  destroy(){
+    this.#audio.pause();
+    this.#audio.removeAttribute('src');
+    this.#audio.load();
   }
 
   #handleEnded() {
@@ -121,3 +158,6 @@ class Player {
 }
 
 export const player = new Player();
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => player.destroy());
+}
