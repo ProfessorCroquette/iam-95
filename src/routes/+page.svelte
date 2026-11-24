@@ -5,6 +5,7 @@
   import Crt from "$lib/components/Crt.svelte";
 
   const appWindow = getCurrentWindow();
+  
 </script>
 
 <AppWindow>
@@ -13,5 +14,8 @@
     onminimize={() => appWindow.minimize()}
     onclose={() => appWindow.close()}
   />
+
+  
+ 
   <Crt />
 </AppWindow>
