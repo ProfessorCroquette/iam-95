@@ -2,9 +2,21 @@ import type { Track } from "./types";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { scanFolder } from "./scan";
+import { save, load } from "./storage";
 
 type RepeatMode = "off" | "one" | "all";
 type Status = "idle" | "scanning" | "playing" | "paused";
+
+// saved data can be old or damaged, so check it before trusting it
+function isTrack(x: unknown): x is Track {
+  if (typeof x !== "object" || x === null) return false;
+  const t = x as Record<string, unknown>;
+  return (
+    typeof t.title === "string" &&
+    typeof t.artist === "string" &&
+    typeof t.src === "string"
+  );
+}
 
 class Player {
   // --- state: things that change ---
@@ -36,6 +48,28 @@ class Player {
   );
 
   constructor() {
+    // 1. restore what was saved last time
+    const savedVolume = load("volume");
+    if (typeof savedVolume === "number" && savedVolume >= 0 && savedVolume <= 1) {
+      this.volume = savedVolume;
+    }
+
+    const savedRepeat = load("repeat");
+    if (savedRepeat === "off" || savedRepeat === "one" || savedRepeat === "all") {
+      this.repeat = savedRepeat;
+    }
+
+    const savedTracks = load("tracks");
+    if (Array.isArray(savedTracks)) {
+      this.tracks = savedTracks.filter(isTrack);
+    }
+
+    const savedIndex = load("index");
+    if (typeof savedIndex === "number" && savedIndex >= 0 && savedIndex < this.tracks.length) {
+      this.index = savedIndex;
+    }
+
+    // 2. connect the audio element
     const a = this.#audio;
     a.volume = this.volume;
     a.onplay = () => (this.isPlaying = true);
@@ -46,6 +80,11 @@ class Player {
     };
     a.onended = () => this.#handleEnded();
     a.onerror = () => (this.error = "Could not load this file");
+
+    // 3. get the restored song ready, but do not play it
+    if (this.index !== -1) {
+      a.src = convertFileSrc(this.tracks[this.index].src);
+    }
   }
 
   play(i: number) {
@@ -58,6 +97,7 @@ class Player {
     this.#audio.play().catch(() => {
       this.error = "Playback failed";
     });
+    save("index", i);
   }
 
   toggle() {
@@ -100,6 +140,7 @@ class Player {
         return;
       }
       this.tracks = found;
+      save("tracks", found);
       this.play(0);
     } catch {
       this.error = "SOMETHING WICKED HAPPENING";
@@ -112,6 +153,7 @@ class Player {
     const clamped = Math.min(Math.max(v, 0), 1);
     this.volume = clamped;
     this.#audio.volume = clamped;
+    save("volume", clamped);
   }
 
   next() {
@@ -131,12 +173,7 @@ class Player {
   cycleRepeat() {
     const order: RepeatMode[] = ["off", "all", "one"];
     this.repeat = order[(order.indexOf(this.repeat) + 1) % order.length];
-  }
-
-  destroy(){
-    this.#audio.pause();
-    this.#audio.removeAttribute('src');
-    this.#audio.load();
+    save("repeat", this.repeat);
   }
 
   #handleEnded() {
@@ -155,9 +192,17 @@ class Player {
       this.next();
     }
   }
+
+  destroy() {
+    this.#audio.pause();
+    this.#audio.removeAttribute("src");
+    this.#audio.load();
+  }
 }
 
 export const player = new Player();
+
+// dev only: when this file is hot-replaced, silence the old player
 if (import.meta.hot) {
   import.meta.hot.dispose(() => player.destroy());
 }
