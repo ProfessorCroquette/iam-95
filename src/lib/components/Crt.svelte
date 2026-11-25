@@ -23,6 +23,12 @@
     one: 'ＲＥＰＥＡＴ　ＯＮＣＥ',
     all: 'ＲＥＰＥＡＴ　ＡＬＬ'
   };
+
+  let boxW = $state(0);
+let textW = $state(0);
+const title = $derived(player.current ? `${player.current.title} - ${player.current.artist}`:'');
+const shift = $derived(boxW>0 ? Math.min(0, boxW - textW) : 0);
+const dur = $derived(Math.max(1.5, Math.abs(shift) / 80));
 </script>
 
 
@@ -32,15 +38,27 @@
       {label}
     </p>
     <p class="win-95-display-info" style="font-size: 0.50rem;">{REPEATS[player.repeat]}</p>
-    <p class="win-95-display-time">{fmt(player.time)} ／ {fmt(player.duration)}</p>
+    <p class="win-95-display-time">{player.current ? fmt(player.time) : '--:--'} ／ {player.current ? fmt(player.duration) : '--:--'}</p>
   </div>
+
+
+
 
   <div class="win-95-display-main">
     <div class="win-95-display-text">
       {#if player.current}
-        <p class="win-95-display-track">
-          {player.current.title} - {player.current.artist}
-        </p>
+      <div class="win-95-marquee" bind:clientWidth={boxW}>
+  {#key title}
+    <p
+      class="win-95-display-track"
+      class:is-scrolling={shift < 0}
+      style="--shift: {shift}px; --dur: {dur}s"
+      bind:clientWidth={textW}
+    >
+      {title}
+    </p>
+  {/key}
+</div>
         <p class="win-95-display-info">{player.current.album ?? 'ＳＩＮＧＬＥ'}</p>
         <p class="win-95-display-info">
           {fmtBitrate(player.current.bitrate)} ・ {fmtSampleRate(player.current.sampleRate)}

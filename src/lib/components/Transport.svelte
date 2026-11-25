@@ -3,17 +3,13 @@
     
     const hasTrack = $derived(player.index !== -1);
     const volPct = $derived(player.volume * 100);
-  const repeatIcon = $derived(player.repeat === 'one' ? '⟳' : '↻');
-  let dragging = $state(false);
-  let dragValue = $state(0);
-  const shown = $derived(dragging ? dragValue : player.time);
-  const pct = $derived(player.duration ? (shown / player.duration) * 100 : 0);
+    const repeatIcon = $derived(player.repeat === 'one' ? '⟳' : '↻');
+    let dragging = $state(false);
+    let dragValue = $state(0);
+    const shown = $derived(dragging ? dragValue : player.time);
+    const pct = $derived(player.duration ? (shown / player.duration) * 100 : 0);
 
   // scrolling title: slide only when the text is wider than its box
-  let boxW = $state(0);
-  let textW = $state(0);
-  const shift = $derived(Math.min(0, boxW - textW));
-  const label = $derived(player.error || player.isPlaying);
 
 
 </script>

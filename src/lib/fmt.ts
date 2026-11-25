@@ -1,5 +1,5 @@
 export function fmt(seconds?: number): string {
-  if (seconds === undefined || !Number.isFinite(seconds)) return '--/--';
+  if (seconds === undefined || !Number.isFinite(seconds)) return '--:--';
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${mins}:${secs.toString().padStart(2, '0')}`;

@@ -4,7 +4,7 @@ import { parseBuffer } from 'music-metadata';
 import type { Track } from './types';
 
 const AUDIO_EXTENSIONS = ['mp3', 'flac', 'wav', 'ogg', 'm4a', 'opus'];
-const SCAN_DELAY_MS = 40;
+
 
 function extensionOf(name: string): string {
   const dotIndex = name.lastIndexOf('.');
@@ -88,7 +88,7 @@ export async function scanFolder(
   for (const path of paths) {
     tracks.push(await readTrack(path));
     onProgress?.(tracks.length, paths.length, fileNameOf(path));
-    await new Promise((resolve) => setTimeout(resolve, SCAN_DELAY_MS));
+    await new Promise((resolve) => setTimeout(resolve));
   }
 
   return tracks;
